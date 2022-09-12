@@ -2,7 +2,7 @@
 const Ajv = require("ajv")
 const ajv = new Ajv()
 
-// Validate email for login
+// Validate email for login 
 const schemaLogin = {
   type: "object",
   properties: {
@@ -48,8 +48,28 @@ function phoneOtpValidator(req, res, next) {
   }
 }
 
+//validate step one
+const schemaOneValidation =  {
+  type: "object",
+  properties: {
+    name: { type: "string", maxLength: 3, minLength: 50 },
+    gender:{ enum: ['male', 'female', 'other']}
+  },
+  required: ["gender", "name"],
+  additionalProperties: false,
+}
+const validateStepOne= ajv.compile(schemaOneValidation)
+function stepOneValidator(req, res, next) {
+  const valid = validateStepOne(req.body)
+  if (!valid) {
+    return res.status(200).json({ "response_code": 400, "message": "Data validation error", "response" : null })
+  } else {
+    next();
+  }
+}
 
 module.exports = {
   loginValidator,
   phoneOtpValidator,
+  stepOneValidator
 };

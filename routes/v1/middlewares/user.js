@@ -2,7 +2,7 @@ const user = require("./../models/user");
 
 function validateUserExist(req, res, next) {
   user
-    .findOne({ phone: req.body.phone })
+    .findOne({ phone: req.body.phone ,country_code:req.body.country_code})
     .then((data) => {
       if (data == null) {
         return res
@@ -29,7 +29,7 @@ function validateUserExist(req, res, next) {
 
 function createUserIfNotExist(req, res, next) {
   user
-    .findOne({ phone: req.body.phone })
+    .findOne({ phone: req.body.phone,country_code:req.body.country_code })
     .then((data) => {
       if (data == null) {
         var usernew = new user({
@@ -81,7 +81,8 @@ function setProfileCompletion(req,res,next){
       user.findByIdAndUpdate(req.user_id,{
         "$set":{
           name:req.body.name,
-          profile_completion:1
+          profile_completion:1,
+          gender:req.body.gender
         }
       },(err,reply)=>{
         if(err){

@@ -6,15 +6,16 @@ require('dotenv').config()
 function createToken(req,res,next){
     user_id = req.temp_user._id;
     user_phone =  req.temp_user.phone;
+    user_country_code = req.temp_user.country_code
     try{
-        var token = jwt.sign({ user_id: user_id,user_phone:user_phone }, process.env.JWT_SECRET_KEY,  {
+        var token = jwt.sign({ user_id: user_id,user_phone:user_phone ,country_code:user_country_code}, process.env.JWT_SECRET_KEY,  {
             algorithm: "HS256",
             expiresIn: 365*24*3600,
         });
         req.token = token;
         next()
     }catch(err){
-        console.log("error in jwt page")
+        console.log("Error in JWT page")
         console.log(err)
         res.status(200).send({
             "response_code":500,
@@ -39,6 +40,7 @@ function validateToken(req,res,next){
                   var decodedToken = jwt.decode(token)
                   req.user_id = decodedToken["user_id"],
                   req.user_phone = decodedToken["user_phone"]
+                  req.country_code = decodedToken["country_code"]
                   next()
           })
     }}catch(err){

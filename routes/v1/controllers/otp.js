@@ -11,13 +11,20 @@ const generateOtp = function () {
 async function sendOtp(mobile, otp) {
   console.log(mobile);
   console.log(otp);
-  const res = await axios.post(`https://api.in.kaleyra.io/v1/HXIN1740145135IN/messages`, {
-    "body":"Hi User, Please find the below OTP "+otp+" -Kaleyra",
-    "sender":"KALERA",
-    "to":mobile,
-    "type":"OTP",
-    "template_id":"1107165959873165373"
-  });
+  const res = await axios.post(
+    `https://api.in.kaleyra.io/v1/HXIN1740145135IN/messages`,
+    {
+      body: "Hi User, Please find the below OTP " + otp + " -Kaleyra",
+      sender: "KALERA",
+      to: mobile,
+      type: "OTP",
+      template_id: "1107165959873165373",
+    },
+    {
+      "api-key": process.env.KALERA_API_KEY,
+      "Content-Type": "application/json",
+    }
+  );
   console.log(res.data);
   if (res.status == 200) {
     return res.data["response_code"];

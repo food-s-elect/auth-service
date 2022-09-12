@@ -24,6 +24,9 @@ const user = new mongoose.Schema({
   creation_ip: {
     type: String,
   },
+  gender:{
+    type:String
+  },
   profile:{
     type:String,
     default:"https://i.pinimg.com/736x/f0/ce/2b/f0ce2bb845800dbf95f57fe928166d83.jpg"

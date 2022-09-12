@@ -4,16 +4,16 @@ const { sendOtp, generateOtp } = require("../controllers/otp");
 function createOtp(req, res, next) {
     const otp = generateOtp();
     redis.set(
-      `otp-${req.body.email}`,
+      `otp-${req.body.country_code}${req.body.phone}`,
       otp,
-      "ex",
+      "ex", 
       3600,
       async  function (err, reply) {
        try{ if (err) {
           throw new Error(`Failed to set redis ${err}`);
         } else {
           req.otp = otp;
-          const status =await sendOtp(req.body.phone, req.otp);
+          const status =await sendOtp(`+${req.body.country_code}${req.body.phone}`, req.otp);
           console.log(status);
           if (status == 200) {
             next();
@@ -34,7 +34,7 @@ function createOtp(req, res, next) {
 
 function validateOTP(req, res, next) {
   if (redis.IsReady) {
-    redis.get("otp-"+req.body.phone, (err, reply) => {
+    redis.get("otp-"+req.body.country_code+req.body.phone, (err, reply) => {
       if (err) {
         console.log(err);
         return res.status(200).json({
