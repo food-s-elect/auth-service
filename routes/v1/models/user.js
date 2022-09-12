@@ -17,9 +17,8 @@ const user = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  created: {
-    type: Array,
-    default: [],
+  voted:{
+    type:String
   },
   creation_ip: {
     type: String,
