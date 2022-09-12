@@ -3,11 +3,11 @@ const redis = require("./../../services/redis");
 const express = require("express");
 var router = express.Router();
 
-const { loginValidator,phoneOtpValidator,stepOneValidator} = require("./middleware/validators");
+const { loginValidator,phoneOtpValidator,stepOneValidator} = require("./middlewares/validators");
 
-const {createUserIfNotExist,validateUserExist,setProfileCompletion} = require('./middleware/user');
-const { validateOTP, createOtp } = require("./middleware/otp");
-const { createToken,validateToken } = require("./middleware/token");
+const {createUserIfNotExist,validateUserExist,setProfileCompletion} = require('./middlewares/user');
+const { validateOTP, createOtp } = require("./middlewares/otp");
+const { createToken,validateToken } = require("./middlewares/token");
  
 
 router.post("/login", loginValidator,createUserIfNotExist,createOtp, async (req, res) => {
