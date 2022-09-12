@@ -7,7 +7,7 @@ function createOtp(req, res, next) {
       `otp-${req.body.country_code}${req.body.phone}`,
       otp,
       "ex", 
-      3600,
+      3600, 
       async  function (err, reply) {
        try{ if (err) {
           throw new Error(`Failed to set redis ${err}`);
@@ -44,6 +44,7 @@ function validateOTP(req, res, next) {
         });
       } else {
         console.log(reply)
+        redis.del("otp-"+req.body.country_code+req.body.phone)
         if (reply == req.body.otp) {
           next();
         } else {

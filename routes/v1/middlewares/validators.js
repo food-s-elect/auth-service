@@ -9,7 +9,7 @@ const schemaLogin = {
     phone: { type: "string", maxLength: 10, minLength: 10 },
     country_code:{type:"string",minLength:1,maxLength:3}
   },
-  required: ["email","country_code"],
+  required: ["phone","country_code"],
   additionalProperties: false,
 }
 
@@ -32,9 +32,9 @@ const schemaPhoneOtp = {
   properties: {
     phone: { type: "string", maxLength: 10, minLength: 10 },
     country_code:{type:"string",minLength:1,maxLength:3},
-    otp: {type:"string" },
+    otp: {type:"string",minLength:6,maxLength:6 },
   },
-  required: ["email", "otp","country_code"],
+  required: ["phone", "otp","country_code"],
   additionalProperties: false,
 }
 
@@ -49,16 +49,16 @@ function phoneOtpValidator(req, res, next) {
 }
 
 //validate step one
-const schemaOneValidation =  {
+const stepOneValidation =  {
   type: "object",
   properties: {
-    name: { type: "string", maxLength: 3, minLength: 50 },
-    gender:{ enum: ['male', 'female', 'other']}
+    name: { type: "string", maxLength: 50, minLength: 3 },
+    gender:{ enum:['male','female','other']}
   },
-  required: ["gender", "name"],
+  required: ["name","gender"],
   additionalProperties: false,
 }
-const validateStepOne= ajv.compile(schemaOneValidation)
+const validateStepOne= ajv.compile(stepOneValidation)
 function stepOneValidator(req, res, next) {
   const valid = validateStepOne(req.body)
   if (!valid) {

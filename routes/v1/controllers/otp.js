@@ -9,6 +9,7 @@ const generateOtp = function () {
 };
 
 async function sendOtp(mobile, otp) {
+  console.log("mobile and otp")
   console.log(mobile);
   console.log(otp);
   const res = await axios.post(
@@ -20,14 +21,15 @@ async function sendOtp(mobile, otp) {
       type: "OTP",
       template_id: "1107165959873165373",
     },
-    {
+    {headers:{
       "api-key": process.env.KALERA_API_KEY,
       "Content-Type": "application/json",
-    }
+    }}
   );
-  console.log(res.data);
-  if (res.status == 200) {
-    return res.data["response_code"];
+  
+  if (res.status == 200 ||res.status==201||res.status==202) {
+    console.log("otp sent to "+mobile+" successfully");
+    return 200;
   } else {
     console.log(`response with status ${res.status}`);
     return 500;
